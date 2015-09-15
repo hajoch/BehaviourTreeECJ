@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/BT/BT.iml" filepath="$PROJECT_DIR$/BT/BT.iml" />
+      <module fileurl="file://$PROJECT_DIR$/BehaviourTree.iml" filepath="$PROJECT_DIR$/BehaviourTree.iml" />
+    </modules>
+  </component>
+</project>
+
