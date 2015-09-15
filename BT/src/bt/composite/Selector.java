@@ -37,8 +37,4 @@ public class Selector<E> extends Composite<E> {
         else
             fail();
     }
-
-
-    @Override
-    public void end() {}
 }

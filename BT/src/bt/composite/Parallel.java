@@ -37,7 +37,6 @@ public class Parallel<E> extends Composite<E> {
                 runningTasks[i] = false;
         success = true;
     }
-
     @Override
     public void run() {
         noRunningTasks = true;
@@ -53,9 +52,6 @@ public class Parallel<E> extends Composite<E> {
         }
     }
 
-    @Override
-    public void end() {
-    }
 
     @Override
     public void childRunning(Task<E> focal, Task<E> nonFocal) {
@@ -63,7 +59,6 @@ public class Parallel<E> extends Composite<E> {
         noRunningTasks = false;
         parent.childRunning(this, this);
     }
-
     @Override
     public void childSuccess(Task<E> task) {
         runningTasks[currentChildIndex] = false;
@@ -74,7 +69,6 @@ public class Parallel<E> extends Composite<E> {
                 fail();
         }
     }
-
     @Override
     public void childFail(Task<E> task) {
         runningTasks[currentChildIndex] = false;
@@ -82,6 +76,7 @@ public class Parallel<E> extends Composite<E> {
         if(noRunningTasks && currentChildIndex == children.size()-1)
             fail();
     }
+
 
     @Override
     public void reset() {

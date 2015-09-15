@@ -53,6 +53,9 @@ public abstract class Composite<E> extends Task<E> {
         this.childIndex = 0;
     }
 
+    @Override
+    public void end() {
+        // Just to avoid it being needed in the extending classes.
+    }
 
-    //TODO
 }
