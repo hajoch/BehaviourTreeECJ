@@ -1,29 +1,49 @@
 package bt;
 
+import ec.gp.GPNode;
+
+import java.awt.*;
 import java.util.ArrayList;
 
 /**
  * Created by Hallvard on 14.09.2015.
  */
-public abstract class Task<E> {
+public abstract class Task<E> extends GPNode {
 
     protected Task<E> parent;
     protected Task<E> runningTask;
-    protected ArrayList<Task<E>> children;
+    protected ArrayList<Task<E>> childTasks;
     protected BehaviourTree<E> tree;
+
+    public enum TaskState {
+        SUCCEEDED(Color.GREEN),
+        FAILED(Color.RED),
+        RUNNING(Color.BLUE),
+        NEUTRAL(Color.WHITE),
+        CANCELLED(Color.PINK);
+
+        public final Color color;
+        private TaskState(Color color) {
+            this.color = color;
+        }
+    }
+
+    public TaskState taskState = TaskState.NEUTRAL;
 
     public abstract void start();
     public abstract void end();
     public abstract void run();
+
 
     /**
      * Recursively resets the task so it can restart safely on the next run.
      */
     public void reset() {
         runningTask = null;
-        for(Task<E> child : children) {
+        for(Task<E> child : childTasks) {
             child.reset();
         }
+        taskState = TaskState.NEUTRAL;
     }
 
     /**
@@ -44,6 +64,9 @@ public abstract class Task<E> {
         this.parent = parent;
         this.tree = parent.tree;
     }
+    public Task<E> getParent() {
+        return parent;
+    }
 
     /**
      * Will be called to signal parent that this task has to run again.
@@ -58,14 +81,16 @@ public abstract class Task<E> {
     public void success() {
         end();
         parent.childSuccess(this);
+        taskState = TaskState.SUCCEEDED;
     }
     public void fail() {
         end();
         parent.childFail(this);
+        taskState = TaskState.FAILED;
     }
 
     /**
-     * Called when one of the children respectively succeed or fail
+     * Called when one of the childTasks respectively succeed or fail
      * @param task  task that succeeded/failed
      */
     public void childFail(Task<E> task) {
@@ -79,22 +104,25 @@ public abstract class Task<E> {
      *  Children uses this method to signal the ancestor that needs to run again.
      *
      * @param focal the running task (that needs to run again)
-     * @param nonFocal the reporter task (usually one of its children)
+     * @param nonFocal the reporter task (usually one of its childTasks)
      */
     public void childRunning(Task<E> focal, Task<E> nonFocal) {
         this.runningTask = focal;
     }
 
+    protected void setRunning() {
+        this.taskState = TaskState.RUNNING;
+    }
 
     // Child handlers
     public void addChild(Task<E> child) {
-        children.add(child);
+        childTasks.add(child);
     }
     public Task<E> getChild(int i) {
-        return children.get(i);
+        return childTasks.get(i);
     }
     public int getChildCount() {
-        return children.size();
+        return childTasks.size();
     }
 
 

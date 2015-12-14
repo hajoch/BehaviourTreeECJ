@@ -5,6 +5,10 @@ package bt;
  */
 public abstract class Decorator<E> extends Task<E> {
 
+    public int expectedChildren() {
+        return 1;
+    }
+
     protected Task<E> child;
 
     protected Decorator(){}
@@ -22,6 +26,7 @@ public abstract class Decorator<E> extends Task<E> {
     }
     @Override
     public void start() {
+        setRunning();
         child.setParent(this);
         child.start();
     }
@@ -41,10 +46,14 @@ public abstract class Decorator<E> extends Task<E> {
     @Override public void childRunning(Task<E> focal, Task<E> nonFocal) {
         parent.childRunning(focal, this);
     }
+    @Override public void childSuccess(Task<E> task) {
+        parent.childSuccess(this);
+    }
     @Override public void childFail(Task<E> task) {
         parent.childFail(this);
     }
-    @Override public void childSuccess(Task<E> task) {
-        parent.childSuccess(this);
+
+    @Override public String toString() {
+        return "("+(null == children[0] ? "" : children[0].toString())+")";
     }
 }

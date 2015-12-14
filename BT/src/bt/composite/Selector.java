@@ -2,6 +2,13 @@ package bt.composite;
 
 import bt.Composite;
 import bt.Task;
+import bt.utils.BooleanData;
+import ec.EvolutionState;
+import ec.Problem;
+import ec.gp.ADFStack;
+import ec.gp.GPData;
+import ec.gp.GPIndividual;
+import ec.gp.GPNode;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -17,24 +24,41 @@ public class Selector<E> extends Composite<E> {
     public Selector() {
         this(new ArrayList<Task<E>>());
     }
+
     public Selector(Task<E>... tasks) {
         this(new ArrayList<Task<E>>(Arrays.asList(tasks)));
     }
+
     public Selector(ArrayList<Task<E>> tasks) {
         super(tasks);
     }
-
-
     @Override
     public void childSuccess(Task<E> task) {
         success();
     }
+
+
     @Override
     public void childFail(Task<E> task) {
         super.childFail(task);
-        if(++childIndex < children.size())
+        if(++childIndex < childTasks.size())
             run();
         else
             fail();
+    }
+
+    //ECJ
+    @Override
+    public void eval(EvolutionState evolutionState, int i, GPData gpData, ADFStack adfStack, GPIndividual gpIndividual, Problem problem) {
+        BooleanData dat = (BooleanData)gpData;
+        for(GPNode child : children) {
+            child.eval(evolutionState,i,gpData,adfStack,gpIndividual,problem);
+            if(dat.result) return;
+        }
+
+    }
+    @Override
+    public String toString() {
+        return "selector"+super.toString();
     }
 }

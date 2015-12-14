@@ -1,6 +1,9 @@
 package bt;
 
+import ec.gp.GPNode;
+
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 
 /**
@@ -13,7 +16,7 @@ public abstract class Composite<E> extends Task<E> {
     protected int childIndex;
 
     public Composite(ArrayList<Task<E>> tasks) {
-        this.children = tasks;
+        this.childTasks = tasks;
     }
 
     @Override
@@ -27,12 +30,12 @@ public abstract class Composite<E> extends Task<E> {
         if(runningTask != null)
             runningTask.run();
         else {
-            if(childIndex < children.size()) {
+            if(childIndex < childTasks.size()) {
                 if(!deterministic) {
-                    final int lastChild = children.size() - 1;
-                    if(childIndex < lastChild) Collections.swap(children, childIndex, Math.random() >= 0.5 ? childIndex : lastChild);
+                    final int lastChild = childTasks.size() - 1;
+                    if(childIndex < lastChild) Collections.swap(childTasks, childIndex, Math.random() >= 0.5 ? childIndex : lastChild);
                 }
-                runningTask = children.get(childIndex);
+                runningTask = childTasks.get(childIndex);
                 runningTask.setParent(this);
                 runningTask.start();
                 run();
@@ -43,6 +46,7 @@ public abstract class Composite<E> extends Task<E> {
 
     @Override
     public void start() {
+        setRunning();
         this.childIndex = 0;
         runningTask = null;
     }
@@ -57,5 +61,16 @@ public abstract class Composite<E> extends Task<E> {
     public void end() {
         // Just to avoid it being needed in the extending classes.
     }
+
+    //ECJ
+    @Override
+    public String toString() {
+        return Arrays.toString(children);
+    }
+
+    public int expectedChildren() {
+        return 3;
+    }
+
 
 }

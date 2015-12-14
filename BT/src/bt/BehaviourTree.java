@@ -1,5 +1,11 @@
 package bt;
 
+import ec.EvolutionState;
+import ec.Problem;
+import ec.gp.ADFStack;
+import ec.gp.GPData;
+import ec.gp.GPIndividual;
+
 /**
  * Created by Hallvard on 14.09.2015.
  */
@@ -13,6 +19,16 @@ public class BehaviourTree<E> extends Task<E> {
      */
     public BehaviourTree() {
         this(null, null);
+    }
+
+    @Override
+    public String toString() {
+        return "tree";
+    }
+
+    @Override
+    public void eval(EvolutionState evolutionState, int i, GPData gpData, ADFStack adfStack, GPIndividual gpIndividual, Problem problem) {
+        //TODO What to do here? :/
     }
 
     /**
