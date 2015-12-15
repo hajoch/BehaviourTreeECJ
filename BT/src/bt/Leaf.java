@@ -25,6 +25,11 @@ public abstract class Leaf<E> extends Task<E> {
 
     }
 
+    @Override
+    public int getChildCount() {
+        return 0;
+    }
+
     //LEAF_TASK CANNOT HAVE CHILDREN
     @Override
     public void addChild(Task<E> child) {

@@ -21,11 +21,11 @@ public class UntilSucceed<E> extends LoopDecorator<E> {
     }
 
     @Override public void childSuccess(Task<E> task) {
-        parent.childSuccess(this);
+        success();
+        loop = false;
     }
     @Override public void childFail(Task<E> task) {
-        start();
-        run();
+        loop = true;
     }
 
     //ECJ

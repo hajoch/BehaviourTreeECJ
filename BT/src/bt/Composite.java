@@ -22,7 +22,8 @@ public abstract class Composite<E> extends Task<E> {
     @Override
     public void childRunning(Task<E> focal, Task<E> nonFocal) {
         this.runningTask = focal;
-        parent.childRunning(focal, this);
+//        parent.childRunning(focal, this);
+        running();
     }
 
     @Override

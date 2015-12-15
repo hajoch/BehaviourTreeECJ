@@ -54,6 +54,14 @@ public class BehaviourTree<E> extends Task<E> {
      * This method is the one to be called when the game needs to make decitions!
      */
     public void step() {
+
+        if(rootTask.taskState != TaskState.RUNNING) {
+            rootTask.setParent(this);
+            rootTask.start();
+        }
+        rootTask.run();
+
+        /*
         if(runningTask != null) {
             runningTask.run();
         } else {
@@ -61,6 +69,7 @@ public class BehaviourTree<E> extends Task<E> {
             rootTask.start();
             rootTask.run();
         }
+        */
     }
 
     public E getBlackboard() {

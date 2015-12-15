@@ -43,6 +43,7 @@ public class Sequence<E> extends Composite<E> {
     }
     @Override
     public void childFail(Task<E> task) {
+        super.childFail(task);
         fail();
     }
 

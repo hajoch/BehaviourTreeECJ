@@ -72,21 +72,23 @@ public abstract class Task<E> extends GPNode {
      * Will be called to signal parent that this task has to run again.
      */
     public final void running() {
-        parent.childRunning(this, this);
+        taskState = TaskState.RUNNING;
+        if(null != parent)
+            parent.childRunning(this, this);
     }
 
     /**
      * Will be called to signal that the task is finished running and have succeeded/failed
      */
     public void success() {
+        taskState = TaskState.SUCCEEDED;
         end();
         parent.childSuccess(this);
-        taskState = TaskState.SUCCEEDED;
     }
     public void fail() {
+        taskState = TaskState.FAILED;
         end();
         parent.childFail(this);
-        taskState = TaskState.FAILED;
     }
 
     /**
