@@ -21,16 +21,6 @@ public class BehaviourTree<E> extends Task<E> {
         this(null, null);
     }
 
-    @Override
-    public String toString() {
-        return "tree";
-    }
-
-    @Override
-    public void eval(EvolutionState evolutionState, int i, GPData gpData, ADFStack adfStack, GPIndividual gpIndividual, Problem problem) {
-        //TODO What to do here? :/
-    }
-
     /**
      * Behaviour tree with no blackboard object
      * @param rootTask Root task of the behaviour tree
@@ -98,14 +88,41 @@ public class BehaviourTree<E> extends Task<E> {
         return rootTask == null ? 0 : 1;
     }
 
+    @Override
+    public void reset() {
+        super.reset();
+        tree = this;
+    }
 
+    @Override
+    public void childRunning(Task<E> focal, Task<E> nonFocal) {
+        running();
+    }
+    @Override
+    public void childFail(Task<E> task) {
+        fail();
+    }
+    @Override
+    public void childSuccess(Task<E> task) {
+        success();
+    }
 
     @Override
     public void start() {}
-
     @Override
     public void end() {}
-
     @Override
     public void run() {}
+
+
+    @Override
+    public String toString() {
+        return "tree";
+    }
+
+    @Override
+    public void eval(EvolutionState evolutionState, int i, GPData gpData, ADFStack adfStack, GPIndividual gpIndividual, Problem problem) {
+        //TODO What to do here? :/
+    }
+
 }

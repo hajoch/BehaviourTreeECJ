@@ -12,7 +12,6 @@ public abstract class Leaf<E> extends Task<E> {
 
     @Override
     public void start() {
-        setRunning();
     }
 
     @Override

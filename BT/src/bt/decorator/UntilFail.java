@@ -22,6 +22,7 @@ public class UntilFail<E> extends LoopDecorator<E> {
     }
 
     @Override public void childSuccess(Task<E> task) {
+        reset();
         loop = true;
     }
 

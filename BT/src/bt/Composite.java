@@ -21,8 +21,7 @@ public abstract class Composite<E> extends Task<E> {
 
     @Override
     public void childRunning(Task<E> focal, Task<E> nonFocal) {
-        this.runningTask = focal;
-//        parent.childRunning(focal, this);
+        super.childRunning(focal, nonFocal);
         running();
     }
 
@@ -32,7 +31,7 @@ public abstract class Composite<E> extends Task<E> {
             runningTask.run();
         else {
             if(childIndex < childTasks.size()) {
-                if(!deterministic) {
+                if(!deterministic) { //TODO Not used at this point
                     final int lastChild = childTasks.size() - 1;
                     if(childIndex < lastChild) Collections.swap(childTasks, childIndex, Math.random() >= 0.5 ? childIndex : lastChild);
                 }
@@ -41,13 +40,12 @@ public abstract class Composite<E> extends Task<E> {
                 runningTask.start();
                 run();
             } else
-                end();
+                end(); //Should not happen...
         }
     }
 
     @Override
     public void start() {
-        setRunning();
         this.childIndex = 0;
         runningTask = null;
     }

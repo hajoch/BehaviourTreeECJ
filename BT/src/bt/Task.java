@@ -40,10 +40,30 @@ public abstract class Task<E> extends GPNode {
      */
     public void reset() {
         runningTask = null;
+    //    if(taskState == TaskState.RUNNING) cancel();
         for(Task<E> child : childTasks) {
             child.reset();
         }
         taskState = TaskState.NEUTRAL;
+/*
+        //TODO hmmm, should I really reset this.. Have to check that
+        tree = null;
+        parent = null;
+*/
+    }
+
+    public final void cancel() {
+        cancelFollowingChildren(0);
+        taskState = TaskState.CANCELLED;
+        end();
+    }
+
+    protected void cancelFollowingChildren(int index) {
+        for(int i = index; i<getChildCount(); i++) {
+            Task<E> child = getChild(i);
+            if(child.taskState == TaskState.RUNNING)
+                child.cancel();
+        }
     }
 
     /**
@@ -83,12 +103,14 @@ public abstract class Task<E> extends GPNode {
     public void success() {
         taskState = TaskState.SUCCEEDED;
         end();
-        parent.childSuccess(this);
+        if(parent != null)
+            parent.childSuccess(this);
     }
     public void fail() {
         taskState = TaskState.FAILED;
         end();
-        parent.childFail(this);
+        if(parent != null)
+            parent.childFail(this);
     }
 
     /**
@@ -110,10 +132,6 @@ public abstract class Task<E> extends GPNode {
      */
     public void childRunning(Task<E> focal, Task<E> nonFocal) {
         this.runningTask = focal;
-    }
-
-    protected void setRunning() {
-        this.taskState = TaskState.RUNNING;
     }
 
     // Child handlers

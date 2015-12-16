@@ -18,6 +18,10 @@ public abstract class Decorator<E> extends Task<E> {
 
     @Override
     public void run(){
+        if(taskState != TaskState.RUNNING) {
+            child.setParent(this);
+            child.start();
+        }
         child.run();
     }
     @Override
@@ -26,13 +30,14 @@ public abstract class Decorator<E> extends Task<E> {
     }
     @Override
     public void start() {
-        setRunning();
         child.setParent(this);
         child.start();
     }
 
 
     @Override public void addChild(Task<E> child) {
+        if(this.child != null)
+            throw new IllegalStateException("A decorator cannot have more than one child");
         this.child = child;
     }
     @Override public int getChildCount(){
@@ -42,15 +47,14 @@ public abstract class Decorator<E> extends Task<E> {
         return child;
     }
 
-
     @Override public void childRunning(Task<E> focal, Task<E> nonFocal) {
-        parent.childRunning(focal, this);
+        running();
     }
     @Override public void childSuccess(Task<E> task) {
-        parent.childSuccess(this);
+        success();
     }
     @Override public void childFail(Task<E> task) {
-        parent.childFail(this);
+        fail();
     }
 
     @Override public String toString() {

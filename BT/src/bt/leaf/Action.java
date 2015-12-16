@@ -35,5 +35,4 @@ public abstract class Action<E> extends Leaf<E> {
                 throw new IllegalStateException("Invalid status returned by: "+res.name());
         }
     }
-
 }
