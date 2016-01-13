@@ -13,6 +13,15 @@ import ec.gp.GPIndividual;
  */
 public abstract class Condition<E> extends Leaf<E> {
 
+    protected abstract boolean condition();
+
+    @Override
+    public void run() {
+        if(condition())
+            success();
+        else fail();
+    }
+
     @Override
     public void eval(EvolutionState evolutionState, int i, GPData gpData, ADFStack adfStack, GPIndividual gpIndividual, Problem problem) {
         BooleanData dat = (BooleanData)gpData;
