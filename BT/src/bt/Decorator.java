@@ -17,6 +17,21 @@ public abstract class Decorator<E> extends Task<E> {
     }
 
     @Override
+    public void reset() {
+        runningTask = null;
+        if(taskState == TaskState.RUNNING) cancel();
+        child.reset();
+        taskState = TaskState.NEUTRAL;
+    }
+
+    @Override
+    protected void cancelFollowingChildren(int index) {
+        if(index == 0)
+            if(child.taskState == TaskState.RUNNING)
+                cancel();
+    }
+
+    @Override
     public void run(){
         if(taskState != TaskState.RUNNING) {
             child.setParent(this);
