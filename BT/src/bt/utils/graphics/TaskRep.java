@@ -1,9 +1,12 @@
 package bt.utils.graphics;
 
-import bt.*;
+import bt.Decorator;
+import bt.Leaf;
+import bt.Task;
+import bt.leaf.Action;
+import bt.leaf.Condition;
 
 import java.awt.*;
-import java.util.concurrent.locks.Condition;
 
 /**
  * Created by Hallvard on 26.11.2015.
@@ -12,7 +15,7 @@ public class TaskRep {
     public enum Type {
         DECORATOR,
         COMPOSITE,
-        LEAF,
+        ACTION,
         CONDITION,
         OTHER
     }
@@ -50,8 +53,8 @@ public class TaskRep {
             type = Type.COMPOSITE;
         else if(task instanceof Condition)
             type = Type.CONDITION;
-        else if (task instanceof Leaf)
-            type = Type.LEAF;
+        else if (task instanceof Action)
+            type = Type.ACTION;
         else
             type = Type.OTHER;
     }
@@ -82,12 +85,17 @@ public class TaskRep {
                 g.fillOval(X, Y, WIDTH, HEIGHT);
                 break;
             }
-            case LEAF: {
+            case ACTION: {
                 g.fillRoundRect(X,Y,WIDTH, HEIGHT, HEIGHT/4, WIDTH/4);
                 break;
             }
             case CONDITION: { // TODO FIX
                 g.fillRect(X,Y, WIDTH, HEIGHT);
+                g.setColor(Color.BLACK);
+                Font tmp = g.getFont();
+                g.setFont(new Font("Serif", Font.PLAIN, 20));
+                g.drawString("?",X+WIDTH/2, Y+HEIGHT/4);
+                g.setFont(tmp);
             }
             case OTHER:
                 g.fillPolygon(new int[]{X+ WIDTH/4,X+ WIDTH/2,X+ WIDTH/4,X+ WIDTH/2}, new int[]{Y+ HEIGHT/2, Y, Y+ HEIGHT/2, Y+ HEIGHT}, 4);
