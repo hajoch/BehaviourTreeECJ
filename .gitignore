@@ -10,5 +10,5 @@ hs_err_pid*
 # IntelliJ
 *.iml
 
-## Directory-based project format:
-.idea/
+# Directory-based project format
+.idea/*
