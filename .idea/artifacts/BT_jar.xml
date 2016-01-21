@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="BT:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/BT_jar</output-path>
+    <root id="archive" name="BT.jar">
+      <element id="module-output" name="BT" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libs/ecj.23.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
