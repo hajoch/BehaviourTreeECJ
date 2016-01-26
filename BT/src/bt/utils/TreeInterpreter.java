@@ -2,10 +2,9 @@ package bt.utils;
 
 import bt.BehaviourTree;
 import bt.Task;
-import bt.composite.Parallel;
-import bt.composite.Selector;
-import bt.composite.Sequence;
+import bt.composite.*;
 import bt.decorator.*;
+import com.sun.istack.internal.NotNull;
 
 import java.util.HashMap;
 import java.util.Optional;
@@ -27,7 +26,7 @@ public class TreeInterpreter {
         translate(btClasses);
     }
 
-    public static <E> Optional<BehaviourTree<E>> create(E blackboard, Class<? extends Task>[] leafNodes, String rep) {
+    public static <E> Optional<BehaviourTree<E>> create(@NotNull E blackboard, Class<? extends Task>[] leafNodes, String rep) {
         BehaviourTree<E> tree = new BehaviourTree<>();
         tree.setBlackboard(blackboard);
         translate(leafNodes);
@@ -76,6 +75,7 @@ public class TreeInterpreter {
             e.printStackTrace();
             throw new ClassCastException(e.getMessage());
         }
+        assert node.isPresent();
         return node.orElseThrow(() -> new ClassCastException("Something wierd went down in getNode()"));
     }
 
