@@ -11,17 +11,20 @@ public abstract class Leaf<E> extends Task<E> {
     }
 
     @Override
-    public void start() {
-    }
-
+    public void start() {}
     @Override
-    public void end() {
+    public void end() {}
 
-    }
-
+    /**
+     * Default naming convention, utilizing the
+     * same algorithm as used by the TreeInterpreter
+     * @return       Leaf-node identifier
+     */
     @Override
-    public void run() {
-
+    public String toString() {
+        String sn = getClass().getSimpleName();
+        return Character.toLowerCase(sn.charAt(0))
+                + (sn.length() > 1 ? sn.substring(1): "");
     }
 
     @Override
@@ -29,7 +32,7 @@ public abstract class Leaf<E> extends Task<E> {
         return 0;
     }
 
-    //LEAF_TASK CANNOT HAVE CHILDREN
+    //A LEAF-TASK CANNOT HAVE CHILDREN
     @Override
     public void addChild(Task<E> child) {
         throw new UnsupportedOperationException("Leaf task cannot have any childTasks");
