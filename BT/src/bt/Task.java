@@ -35,6 +35,8 @@ public abstract class Task<E> extends GPNode {
     public abstract void run();
 
 
+    public abstract String humanToString();
+
     /**
      * Recursively resets the task so it can restart safely on the next run.
      */
@@ -145,5 +147,15 @@ public abstract class Task<E> extends GPNode {
         return childTasks.size();
     }
 
+    /**
+    * Default naming convention, utilizing the
+    * same algorithm as used by the TreeInterpreter
+    * @return       Leaf-node identifier
+    **/
+    protected String getStandardName() {
+        String sn = getClass().getSimpleName();
+        return Character.toLowerCase(sn.charAt(0))
+                + (sn.length() > 1 ? sn.substring(1): "");
+    }
 
 }

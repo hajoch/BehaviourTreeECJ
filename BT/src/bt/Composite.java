@@ -5,6 +5,7 @@ import ec.gp.GPNode;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.stream.Collectors;
 
 /**
  * Created by Hallvard on 14.09.2015.
@@ -59,6 +60,11 @@ public abstract class Composite<E> extends Task<E> {
     @Override
     public void end() {
         // Just to avoid it being needed in the extending classes.
+    }
+
+    @Override
+    public String humanToString() {
+        return getStandardName()+"["+childTasks.stream().map(Task::humanToString).collect(Collectors.joining(", "))+"]";
     }
 
     //ECJ

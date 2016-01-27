@@ -39,8 +39,4 @@ public class UntilFail<E> extends LoopDecorator<E> {
             children[0].eval(evolutionState,i,gpData,adfStack,gpIndividual,problem);
         } while(dat.result);
     }
-    @Override
-    public String toString() {
-        return "untilFail"+super.toString();
-    }
 }

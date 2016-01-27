@@ -16,15 +16,16 @@ public abstract class Leaf<E> extends Task<E> {
     public void end() {}
 
     /**
-     * Default naming convention, utilizing the
-     * same algorithm as used by the TreeInterpreter
-     * @return       Leaf-node identifier
-     */
+     * To be used by ECJ
+     **/
     @Override
     public String toString() {
-        String sn = getClass().getSimpleName();
-        return Character.toLowerCase(sn.charAt(0))
-                + (sn.length() > 1 ? sn.substring(1): "");
+        return getStandardName();
+    }
+
+    @Override
+    public String humanToString() {
+        return toString();
     }
 
     @Override

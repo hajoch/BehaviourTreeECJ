@@ -36,8 +36,4 @@ public class UntilSucceed<E> extends LoopDecorator<E> {
             children[0].eval(evolutionState,i,gpData,adfStack,gpIndividual,problem);
         } while(!dat.result);
     }
-    @Override
-    public String toString() {
-        return "untilSucceed"+super.toString();
-    }
 }

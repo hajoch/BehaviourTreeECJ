@@ -114,10 +114,15 @@ public class BehaviourTree<E> extends Task<E> {
     @Override
     public void run() {}
 
+    @Override
+    public String humanToString() {
+        return rootTask.humanToString();
+    }
 
+    //TODO don't think this method in this class is ever used by ECJ, and then should use humanToString() instead?
     @Override
     public String toString() {
-        return "tree";
+        return rootTask.toString();
     }
 
     @Override

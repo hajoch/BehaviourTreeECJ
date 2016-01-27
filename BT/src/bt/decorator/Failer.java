@@ -37,8 +37,4 @@ public class Failer<E> extends Decorator<E> {
         children[0].eval(evolutionState,i,gpData,adfStack,gpIndividual,problem);
         dat.result = false;
     }
-    @Override
-    public String toString() {
-        return "failer"+super.toString();
-    }
 }

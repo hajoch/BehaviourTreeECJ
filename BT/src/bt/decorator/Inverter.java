@@ -33,8 +33,4 @@ public class Inverter<E> extends Decorator<E> {
         children[0].eval(evolutionState,i,gpData,adfStack,gpIndividual,problem);
         dat.result = !dat.result;
     }
-    @Override
-    public String toString() {
-        return "inverter"+super.toString();
-    }
 }

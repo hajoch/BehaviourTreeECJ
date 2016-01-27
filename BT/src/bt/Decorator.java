@@ -72,7 +72,13 @@ public abstract class Decorator<E> extends Task<E> {
         fail();
     }
 
+    //ECJ
     @Override public String toString() {
-        return "("+(null == children[0] ? "" : children[0].toString())+")";
+        return getStandardName()+"("+(null == children[0] ? "" : children[0].toString())+")";
+    }
+
+    //After Implementation
+    @Override public String humanToString() {
+        return getStandardName()+"("+(null == child ? "" : child.humanToString())+")";
     }
 }

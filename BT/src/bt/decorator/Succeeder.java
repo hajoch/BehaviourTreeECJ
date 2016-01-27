@@ -33,8 +33,4 @@ public class Succeeder<E> extends Decorator<E> {
         children[0].eval(evolutionState,i,gpData,adfStack,gpIndividual,problem);
         dat.result = true;
     }
-    @Override
-    public String toString() {
-        return "succeeder"+super.toString();
-    }
 }
