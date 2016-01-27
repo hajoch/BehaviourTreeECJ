@@ -70,7 +70,7 @@ public abstract class Composite<E> extends Task<E> {
     //ECJ
     @Override
     public String toString() {
-        return Arrays.toString(children);
+        return getStandardName()+Arrays.toString(children);
     }
 
     public int expectedChildren() {

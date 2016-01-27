@@ -56,8 +56,4 @@ public class Sequence<E> extends Composite<E> {
             if(!dat.result) return;
         }
     }
-    @Override
-    public String toString() {
-        return "sequence"+super.toString();
-    }
 }

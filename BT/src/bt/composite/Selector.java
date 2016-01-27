@@ -57,8 +57,4 @@ public class Selector<E> extends Composite<E> {
         }
 
     }
-    @Override
-    public String toString() {
-        return "selector"+super.toString();
-    }
 }

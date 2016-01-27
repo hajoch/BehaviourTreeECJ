@@ -106,10 +106,6 @@ public class Parallel<E> extends Composite<E> {
         }
         dat.result = x;
     }
-    @Override
-    public String toString() {
-        return "parallel"+super.toString();
-    }
 
     @Override
     public int expectedChildren() {
