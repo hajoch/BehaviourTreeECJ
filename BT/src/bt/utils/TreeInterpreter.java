@@ -12,11 +12,13 @@ import java.util.Optional;
 /**
  * Created by Hallvard on 26.01.2016.
  */
-public class TreeInterpreter {
+public class TreeInterpreter<E> {
 
-    protected static final HashMap<String, Class<? extends Task>> NODE_MAP = new HashMap<>();
+    private E blackboard;
 
-    static {
+    protected final HashMap<String, Class<? extends Task>> NODE_MAP = new HashMap<>();
+
+    {
         @SuppressWarnings("unchecked")
         Class<? extends Task>[] btClasses = new Class[]{
                 Parallel.class, Selector.class, Sequence.class,
@@ -26,7 +28,11 @@ public class TreeInterpreter {
         translate(btClasses);
     }
 
-    public static <E> Optional<BehaviourTree<E>> create(@NotNull E blackboard, Class<? extends Task>[] leafNodes, String rep) {
+    public TreeInterpreter(E blackboard) {
+        this.blackboard = blackboard;
+    }
+
+    public Optional<BehaviourTree<E>> create(Class<? extends Task>[] leafNodes, String rep) {
         BehaviourTree<E> tree = new BehaviourTree<>();
         tree.setBlackboard(blackboard);
         translate(leafNodes);
@@ -66,7 +72,7 @@ public class TreeInterpreter {
     }
 
     @SuppressWarnings("unchecked")
-    private static <E> Task<E> getNode(String name) {
+    private Task<E> getNode(String name) {
         Class<? extends Task> c = NODE_MAP.get(name);
         Optional<Task<E>> node;
         try {
@@ -79,7 +85,7 @@ public class TreeInterpreter {
         return node.orElseThrow(() -> new ClassCastException("Something wierd went down in getNode()"));
     }
 
-    protected static void translate(Class<? extends Task>[] nodes) {
+    protected void translate(Class<? extends Task>[] nodes) {
         for (Class<? extends Task> n : nodes) {
             String sn = n.getSimpleName();
             String alias = Character.toLowerCase(sn.charAt(0))
