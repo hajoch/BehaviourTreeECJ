@@ -11,6 +11,9 @@ import java.util.Optional;
 
 /**
  * Created by Hallvard on 26.01.2016.
+ *
+ * NB:
+ * Only underscore is allowed in the class
  */
 public class TreeInterpreter<E> {
 
