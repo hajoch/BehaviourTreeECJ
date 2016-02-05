@@ -25,6 +25,7 @@ public class UntilSucceed<E> extends LoopDecorator<E> {
         loop = false;
     }
     @Override public void childFail(Task<E> task) {
+        child.reset();
         loop = true;
     }
 
