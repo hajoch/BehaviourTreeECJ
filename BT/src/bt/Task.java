@@ -23,7 +23,7 @@ public abstract class Task<E> extends GPNode {
         CANCELLED(Color.PINK);
 
         public final Color color;
-        private TaskState(Color color) {
+        TaskState(Color color) {
             this.color = color;
         }
     }
@@ -42,9 +42,9 @@ public abstract class Task<E> extends GPNode {
      */
     public void reset() {
         runningTask = null;
-    //    if(taskState == TaskState.RUNNING) cancel();
-        for(Task<E> child : childTasks) {
-            child.reset();
+        if(taskState == TaskState.RUNNING) cancel();
+        for(int i=0; i<getChildCount(); i++) {
+            getChild(i).reset();
         }
         taskState = TaskState.NEUTRAL;
 /*
