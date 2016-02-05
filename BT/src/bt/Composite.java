@@ -1,6 +1,9 @@
 package bt;
 
+import ec.EvolutionState;
+import ec.gp.GPIndividual;
 import ec.gp.GPNode;
+import ec.util.Parameter;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,13 +31,14 @@ public abstract class Composite<E> extends Task<E> {
 
     @Override
     public void run() {
-        if(runningTask != null)
+        if (runningTask != null)
             runningTask.run();
         else {
-            if(childIndex < childTasks.size()) {
-                if(!deterministic) { //TODO Not used at this point
+            if (childIndex < childTasks.size()) {
+                if (!deterministic) { //TODO Not used at this point
                     final int lastChild = childTasks.size() - 1;
-                    if(childIndex < lastChild) Collections.swap(childTasks, childIndex, Math.random() >= 0.5 ? childIndex : lastChild);
+                    if (childIndex < lastChild)
+                        Collections.swap(childTasks, childIndex, Math.random() >= 0.5 ? childIndex : lastChild);
                 }
                 runningTask = childTasks.get(childIndex);
                 runningTask.setParent(this);
@@ -64,17 +68,28 @@ public abstract class Composite<E> extends Task<E> {
 
     @Override
     public String humanToString() {
-        return getStandardName()+"["+childTasks.stream().map(Task::humanToString).collect(Collectors.joining(", "))+"]";
+        return getStandardName() + "[" + childTasks.stream().map(Task::humanToString).collect(Collectors.joining(", ")) + "]";
     }
 
     //ECJ
     @Override
     public String toString() {
-        return getStandardName()+Arrays.toString(children);
+        return getStandardName() + Arrays.toString(children);
     }
 
-    public int expectedChildren() {
-        return 3;
+    /*
+        public int expectedChildren() {
+            return 3;
+        }*/
+    public void checkConstraints(final EvolutionState state,
+                                 final int tree,
+                                 final GPIndividual typicalIndividual,
+                                 final Parameter individualBase) {
+        super.checkConstraints(state, tree, typicalIndividual, individualBase);
+        if (children.length < 2)
+            state.output.error("Incorrect number of children for node " +
+                    toStringForError() + " at " +
+                    individualBase);
     }
 
 
