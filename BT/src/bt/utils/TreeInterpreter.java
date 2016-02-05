@@ -40,7 +40,7 @@ public class TreeInterpreter<E> {
         StringBuilder delta = new StringBuilder();
         Task<E> current = tree;
         for(char c : rep.replace(" ", "").toCharArray()) {
-            if(Character.isAlphabetic(c)) {
+            if(Character.isAlphabetic(c) || c == '_') {
                 delta.append(c);
                 continue;
             }
