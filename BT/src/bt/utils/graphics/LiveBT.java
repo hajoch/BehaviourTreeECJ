@@ -17,15 +17,30 @@ public class LiveBT extends JPanel {
     //TODO Updating single transmission
     //TODO terminate transmissions
     //TODO currently max 20 rows
+    //TODO Concurrency
 
-    static JFrame window;
+    private static volatile JFrame window;
 //    static LiveBT live;
     static Dimension dim = new Dimension(100,100);
 
-    static ArrayList<LiveBT> transmissions = new ArrayList<>();
+    static volatile ArrayList<LiveBT> transmissions = new ArrayList<>();
 
     private final int MARGIN = 10;
     private HashMap<Task, TaskRep> nodes = new HashMap<>();
+
+    public static JFrame getWindowInstance() {
+        if(null == window) {
+            synchronized (LiveBT.class) {
+                if(null == window) {
+                    window = new JFrame();
+                    JTabbedPane pane = new JTabbedPane();
+                    pane.setAutoscrolls(true);
+                    window.setContentPane(pane);
+                }
+            }
+        }
+        return window;
+    }
 
     public LiveBT(BehaviourTree bt) {
         Task root = bt.getChild(0);
@@ -79,14 +94,16 @@ public class LiveBT extends JPanel {
     public static void startTransmission(BehaviourTree bt) {
         LiveBT live = new LiveBT(bt);
         transmissions.add(live);
-        window = new JFrame();
-        window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        window.setBounds(20, 20, dim.width, dim.height);
-        window.getContentPane().add(live);
-        window.setVisible(true);
+
+        JFrame win = LiveBT.getWindowInstance();
+        win.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        win.setBounds(20, 20, dim.width, dim.height+20);
+        ((JTabbedPane)win.getContentPane()).addTab(bt.name(), live);
+
+        win.setVisible(true);
     }
 
-    public static void draw() {
+    public synchronized static void draw() {
         if(transmissions.isEmpty())
             return;
         transmissions.forEach(LiveBT::repaint);

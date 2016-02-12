@@ -86,15 +86,15 @@ public class TaskRep {
                 break;
             }
             case ACTION: {
-                g.fillRoundRect(X,Y,WIDTH, HEIGHT, HEIGHT/4, WIDTH/4);
+                g.fillRoundRect(X,Y,WIDTH, HEIGHT, HEIGHT/2, WIDTH/2);
                 break;
             }
             case CONDITION: { // TODO FIX
                 g.fillRect(X,Y, WIDTH, HEIGHT);
                 g.setColor(Color.BLACK);
                 Font tmp = g.getFont();
-                g.setFont(new Font("Serif", Font.PLAIN, 20));
-                g.drawString("?",X+WIDTH/2, Y+HEIGHT/4);
+                g.setFont(new Font("Helvetica", Font.PLAIN, 20));
+                g.drawString("?",X+(WIDTH/2)-5, Y+HEIGHT-7);
                 g.setFont(tmp);
             }
             case OTHER:
