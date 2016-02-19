@@ -18,10 +18,14 @@ import java.util.Arrays;
  */
 public class Parallel<E> extends Composite<E> {
 
+    //TODO complete policy option!
+
     private Boolean[] runningTasks;
     private boolean success; //is true by default!
     private boolean noRunningTasks;
     private int currentChildIndex;
+
+    private Policy policy = Policy.ALL_SUCCEED;
 
     public Parallel() {
         this(new ArrayList<Task<E>>());
@@ -35,6 +39,18 @@ public class Parallel<E> extends Composite<E> {
         super(tasks);
         this.success = true;
         this.noRunningTasks = true;
+    }
+
+    /**
+     * Optional chained constructor for setting the return policy,
+     * consisting of how many children that need to success for
+     * the parallel node to succeed itself.
+     * @param policy  Number of children that must succeed.
+     * @return              The object itself, for chaining purposes.
+     */
+    public Parallel policy(Policy policy){
+        this.policy = policy;
+        return this;
     }
 
     @Override
@@ -94,6 +110,24 @@ public class Parallel<E> extends Composite<E> {
                 runningTasks[i] = false;
         success = true;
     }
+
+    public enum Policy {
+        ANY_SUCCEED() {
+            @Override public void childFailPolicy(Parallel<?> parallel) {
+            }
+            @Override public void childSucceedPolicy(Parallel<?> parallel) {
+            }
+        },
+        ALL_SUCCEED() {
+            @Override public void childFailPolicy(Parallel<?> parallel) {
+            }
+            @Override public void childSucceedPolicy(Parallel<?> parallel) {
+            }
+        };
+        public abstract void childFailPolicy(Parallel<?> parallel);
+        public abstract void childSucceedPolicy(Parallel<?> parallel);
+    };
+
 
     //ECJ
     @Override
