@@ -9,6 +9,7 @@ import java.util.ArrayList;
  * Created by Hallvard on 14.09.2015.
  */
 public abstract class Task<E> extends GPNode {
+    private static final long serialVersionUID = 1;
 
     protected Task<E> parent;
     protected Task<E> runningTask;
