@@ -43,12 +43,15 @@ public abstract class Decorator<E> extends Task<E> {
     public void end() {
         child.end();
     }
+
+
     @Override
     public void start() {
+        /*
         child.setParent(this);
         child.start();
+        */
     }
-
 
     @Override public void addChild(Task<E> child) {
         if(this.child != null)
