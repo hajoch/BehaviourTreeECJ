@@ -14,6 +14,8 @@ public class BehaviourTree<E> extends Task<E> {
     private Task<E> rootTask;
     private E blackboard;
 
+    private String nickname = "Behaviour Tree";
+
     /**
      * Behaviour tree with no roottask or blackboard object
      */
@@ -133,4 +135,10 @@ public class BehaviourTree<E> extends Task<E> {
         //TODO What to do here? :/
     }
 
+    public BehaviourTree<E> nickname(String s) {
+        setNickname(s);
+        return this;
+    }
+    public void setNickname(String s) { this.nickname = s; }
+    public String getNickname() { return nickname;}
 }
