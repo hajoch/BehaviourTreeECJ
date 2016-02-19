@@ -98,7 +98,7 @@ public class LiveBT extends JPanel {
         JFrame win = LiveBT.getWindowInstance();
         win.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         win.setBounds(20, 20, dim.width, dim.height+20);
-        ((JTabbedPane)win.getContentPane()).addTab(bt.name(), live);
+        ((JTabbedPane)win.getContentPane()).addTab(bt.getNickname(), live);
 
         win.setVisible(true);
     }
