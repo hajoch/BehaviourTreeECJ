@@ -23,7 +23,7 @@ public class LiveBT extends JPanel {
 //    static LiveBT live;
     static Dimension dim = new Dimension(100,100);
 
-    static volatile ArrayList<LiveBT> transmissions = new ArrayList<>();
+    static volatile HashMap<BehaviourTree,LiveBT> transmissions = new HashMap<>();
 
     private final int MARGIN = 10;
     private HashMap<Task, TaskRep> nodes = new HashMap<>();
@@ -93,19 +93,30 @@ public class LiveBT extends JPanel {
 
     public static void startTransmission(BehaviourTree bt) {
         LiveBT live = new LiveBT(bt);
-        transmissions.add(live);
+        transmissions.put(bt, live);
 
         JFrame win = LiveBT.getWindowInstance();
         win.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-        win.setBounds(20, 20, dim.width, dim.height+20);
+        Rectangle b = win.getBounds();
+        win.setBounds(20, 20, (b.width > dim.width ? b.width : dim.width), (b.height > dim.height+20 ? b.height : dim.height+20));
         ((JTabbedPane)win.getContentPane()).addTab(bt.getNickname(), live);
 
         win.setVisible(true);
     }
 
+    public static boolean terminateTransmission(BehaviourTree bt) {
+        LiveBT trans = transmissions.remove(bt);
+        try {
+            trans.getWindowInstance().getContentPane().remove(trans);
+        } catch (NullPointerException e) {
+            return false;
+        }
+        return true;
+    }
+
     public synchronized static void draw() {
         if(transmissions.isEmpty())
             return;
-        transmissions.forEach(LiveBT::repaint);
+        transmissions.values().forEach(LiveBT::repaint);
     }
 }
