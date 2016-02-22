@@ -14,9 +14,7 @@ import java.util.HashMap;
  */
 public class LiveBT extends JPanel {
 
-    //TODO Updating single transmission
-    //TODO terminate transmissions
-    //TODO currently max 20 rows
+    //TODO currently max 50 rows
     //TODO Concurrency
 
     private static volatile JFrame window;
@@ -64,7 +62,7 @@ public class LiveBT extends JPanel {
         return (((max*(w+mw))-(rows*(w+mw)))/(rows+1))*(pos+1);
     }
 
-    public int[] rows = new int[20];
+    public int[] rows = new int[50];
 
     private void generate(Task task, TaskRep parent, int depth){
         TaskRep rep = new TaskRep(task, parent, depth, rows[depth]++);
@@ -118,5 +116,11 @@ public class LiveBT extends JPanel {
         if(transmissions.isEmpty())
             return;
         transmissions.values().forEach(LiveBT::repaint);
+    }
+
+    public synchronized static void drawSingle(BehaviourTree bt) {
+        if(transmissions.containsKey(bt)) {
+            transmissions.get(bt).repaint();
+        }
     }
 }
