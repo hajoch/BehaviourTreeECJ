@@ -15,7 +15,7 @@ import java.util.stream.Collectors;
  */
 public abstract class Composite<E> extends Task<E> {
 
-    public boolean deterministic = true; //TODO
+    public boolean deterministic = true;
 
     protected int childIndex;
 
@@ -35,10 +35,10 @@ public abstract class Composite<E> extends Task<E> {
             runningTask.run();
         else {
             if (childIndex < childTasks.size()) {
-                if (!deterministic) { //TODO Not used at this point
+                if (!deterministic) {
                     final int lastChild = childTasks.size() - 1;
                     if (childIndex < lastChild)
-                        Collections.swap(childTasks, childIndex, Math.random() >= 0.5 ? childIndex : lastChild);
+                        Collections.shuffle(childTasks.subList(childIndex, lastChild));
                 }
                 runningTask = childTasks.get(childIndex);
                 runningTask.setParent(this);
