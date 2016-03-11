@@ -20,9 +20,11 @@ public class Inverter<E> extends Decorator<E> {
     }
 
     @Override public void childFail(Task<E> task) {
+        taskState = TaskState.SUCCEEDED;
         parent.childSuccess(this);
     }
     @Override public void childSuccess(Task<E> task) {
+        taskState = TaskState.FAILED;
         parent.childFail(this);
     }
 

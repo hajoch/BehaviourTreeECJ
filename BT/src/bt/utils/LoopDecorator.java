@@ -15,14 +15,14 @@ public abstract class LoopDecorator<E> extends Decorator<E> {
         super(child);
     }
 
-    public boolean contidtion() {
+    public boolean condition() {
         return loop;
     }
 
     @Override
     public void run() {
         loop = true;
-        while(contidtion()) {
+        while(condition()) {
             if(child.taskState != TaskState.RUNNING) {
                 child.setParent(this);
                 child.start();

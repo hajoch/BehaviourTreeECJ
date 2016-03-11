@@ -51,8 +51,9 @@ public abstract class Task<E> extends GPNode {
 /*
         //TODO hmmm, should I really reset this.. Have to check that
         tree = null;
-        parent = null;
 */
+        parent = null;
+
     }
 
     public final void cancel() {

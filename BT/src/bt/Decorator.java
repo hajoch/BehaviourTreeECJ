@@ -69,9 +69,11 @@ public abstract class Decorator<E> extends Task<E> {
         running();
     }
     @Override public void childSuccess(Task<E> task) {
+        taskState = TaskState.SUCCEEDED;
         success();
     }
     @Override public void childFail(Task<E> task) {
+        taskState = TaskState.FAILED;
         fail();
     }
 
