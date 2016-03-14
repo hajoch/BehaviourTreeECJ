@@ -26,7 +26,7 @@ public class TreeInterpreter<E> {
         Class<? extends Task>[] btClasses = new Class[]{
                 Parallel.class, Selector.class, Sequence.class,
                 Failer.class, Inverter.class, Succeeder.class,
-                UntilFail.class, UntilSucceed.class
+                UntilFail.class, UntilSucceed.class, RandomSelector.class
         };
         translate(btClasses);
     }
@@ -77,12 +77,14 @@ public class TreeInterpreter<E> {
     @SuppressWarnings("unchecked")
     private Task<E> getNode(String name) {
         Class<? extends Task> c = NODE_MAP.get(name);
-        Optional<Task<E>> node;
+        Optional<Task<E>> node = Optional.empty();
         try {
             node = Optional.ofNullable(c.newInstance());
         } catch (InstantiationException|IllegalAccessException e) {
             e.printStackTrace();
             throw new ClassCastException(e.getMessage());
+        } catch (NullPointerException ne) {
+            System.out.println("NAME FAILED: "+name);
         }
         assert node.isPresent();
         return node.orElseThrow(() -> new ClassCastException("Something wierd went down in getNode()"));
