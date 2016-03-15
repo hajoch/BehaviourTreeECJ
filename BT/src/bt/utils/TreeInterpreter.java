@@ -83,8 +83,6 @@ public class TreeInterpreter<E> {
         } catch (InstantiationException|IllegalAccessException e) {
             e.printStackTrace();
             throw new ClassCastException(e.getMessage());
-        } catch (NullPointerException ne) {
-            System.out.println("NAME FAILED: "+name);
         }
         assert node.isPresent();
         return node.orElseThrow(() -> new ClassCastException("Something wierd went down in getNode()"));
