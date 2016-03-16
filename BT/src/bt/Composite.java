@@ -36,9 +36,7 @@ public abstract class Composite<E> extends Task<E> {
         else {
             if (childIndex < childTasks.size()) {
                 if (!deterministic) {
-                    final int lastChild = childTasks.size() - 1;
-                    if (childIndex < lastChild)
-                        Collections.shuffle(childTasks.subList(childIndex, lastChild));
+                    Collections.shuffle(childTasks.subList(childIndex, childTasks.size()));
                 }
                 runningTask = childTasks.get(childIndex);
                 runningTask.setParent(this);
