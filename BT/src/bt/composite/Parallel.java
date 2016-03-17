@@ -25,7 +25,7 @@ public class Parallel<E> extends Composite<E> {
     private boolean noRunningTasks;
     private int currentChildIndex;
 
-    private Policy policy = Policy.ALL_SUCCEED;
+    private Policy policy;
 
     public Parallel() {
         this(new ArrayList<Task<E>>());
@@ -39,6 +39,7 @@ public class Parallel<E> extends Composite<E> {
         super(tasks);
         this.success = true;
         this.noRunningTasks = true;
+        this.policy = Policy.ANY_SUCCEED;
     }
 
     /**
@@ -55,6 +56,7 @@ public class Parallel<E> extends Composite<E> {
 
     @Override
     public void start() {
+        super.start();
         if(runningTasks == null)
             runningTasks = new Boolean[childTasks.size()];
         else
@@ -86,21 +88,14 @@ public class Parallel<E> extends Composite<E> {
     @Override
     public void childSuccess(Task<E> task) {
         runningTasks[currentChildIndex] = false;
-        if(noRunningTasks && currentChildIndex == childTasks.size()-1) {
-            if (success)
-                success();
-            else
-                fail();
-        }
+        policy.childSucceedPolicy(this);
     }
 
 
     @Override
     public void childFail(Task<E> task) {
         runningTasks[currentChildIndex] = false;
-        success = false;
-        if(noRunningTasks && currentChildIndex == childTasks.size()-1)
-            fail();
+        policy.childFailPolicy(this);
     }
     @Override
     public void reset() {
@@ -108,20 +103,41 @@ public class Parallel<E> extends Composite<E> {
         if(runningTasks != null)
             for(int i = 0; i<runningTasks.length; i++)
                 runningTasks[i] = false;
-        success = true;
+        success = noRunningTasks = true;
     }
 
+    /**
+     * Succeed and fail policies
+     */
     public enum Policy {
         ANY_SUCCEED() {
             @Override public void childFailPolicy(Parallel<?> parallel) {
+                if(parallel.noRunningTasks) {
+                    parallel.fail();
+                }
             }
             @Override public void childSucceedPolicy(Parallel<?> parallel) {
+                parallel.success();
+                for(Task t : parallel.childTasks) {
+                    if(t.taskState == TaskState.RUNNING) {
+                        t.cancel();
+                    }
+                }
             }
         },
         ALL_SUCCEED() {
             @Override public void childFailPolicy(Parallel<?> parallel) {
+                parallel.success = false;
+                if(parallel.noRunningTasks && parallel.currentChildIndex == parallel.childTasks.size()-1)
+                    parallel.fail();
             }
             @Override public void childSucceedPolicy(Parallel<?> parallel) {
+                if(parallel.noRunningTasks && parallel.currentChildIndex == parallel.childTasks.size()-1) {
+                    if(parallel.success)
+                        parallel.success();
+                    else
+                        parallel.fail();
+                }
             }
         };
         public abstract void childFailPolicy(Parallel<?> parallel);
