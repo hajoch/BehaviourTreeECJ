@@ -20,10 +20,11 @@ public class TaskRep {
         OTHER
     }
 
-    public final static Dimension MARGIN = new Dimension(50, 30);
+    public final static Dimension MARGIN = new Dimension(30, 30);
     public final static int TEXT_MARGIN = 10;
-    public final static int WIDTH = 50;
+    public final static int WIDTH = 40;
     public final static int HEIGHT = 30;
+    public final static int FONT_SIZE = 10;
 
     public final int DEPTH;
     public final int ROW;
@@ -68,7 +69,12 @@ public class TaskRep {
         state = task.taskState;
 
         g.setColor(Color.BLACK);
-        g.drawString(task.getClass().getSimpleName(), X, Y+HEIGHT+TEXT_MARGIN);
+        g.setFont(new Font("Helvetica", Font.PLAIN, FONT_SIZE));
+
+        //Center the text compared to the node-figure.
+        FontMetrics fm = g.getFontMetrics();
+        int x0 = ((X+WIDTH/2) - (fm.stringWidth(task.getClass().getSimpleName())/2));
+        g.drawString(task.getClass().getSimpleName(), x0, Y+HEIGHT+TEXT_MARGIN);
 
         if(state == Task.TaskState.RUNNING)
             g.setColor(Color.RED);
@@ -93,7 +99,7 @@ public class TaskRep {
                 g.fillRect(X,Y, WIDTH, HEIGHT);
                 g.setColor(Color.BLACK);
                 Font tmp = g.getFont();
-                g.setFont(new Font("Helvetica", Font.PLAIN, 20));
+                g.setFont(new Font("Helvetica", Font.PLAIN, 15));
                 g.drawString("?",X+(WIDTH/2)-5, Y+HEIGHT-7);
                 g.setFont(tmp);
             }
