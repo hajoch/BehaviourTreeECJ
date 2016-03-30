@@ -21,19 +21,19 @@ public abstract class LoopDecorator<E> extends Decorator<E> {
 
     @Override
     public void run() {
-        loop = true;
-        while(condition()) {
+//        loop = true;
+//        while(condition()) {
             if(child.taskState != TaskState.RUNNING) {
                 child.setParent(this);
                 child.start();
             }
             child.run();
-        }
+  //      }
     }
 
     @Override
     public void childRunning(Task<E> focal, Task<E> nonFocal) {
         super.childRunning(focal, nonFocal);
-        loop = false;
+//        loop = false;
     }
 }
